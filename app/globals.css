@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+@theme {
+  --color-charcoal: #0a0e14;
+  --color-surface: #0f1520;
+  --color-surface-2: #151d2e;
+  --color-surface-hi: #1a2540;
+  --color-mist: #f0f2f5;
+  --color-brand-blue: #29adf0;
+  --color-brand-teal: #2dd4a0;
+  --color-brand-green: #1b7a52;
+  --color-muted: #8a9ab5;
+  --color-faint: #4a5a72;
+  --color-line: rgba(41, 173, 240, 0.12);
+
+  --font-display: var(--font-outfit), "Outfit", sans-serif;
+  --font-sans: var(--font-dm-sans), "DM Sans", sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-charcoal);
+    color: white;
+    overflow-x: hidden;
+  }
+}
+
+/* ── brand gradient utilities ── */
+@utility grad-text {
+  background-image: linear-gradient(135deg, #29adf0 0%, #2dd4a0 60%, #1b7a52 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility grad-bg {
+  background: linear-gradient(135deg, #29adf0 0%, #2dd4a0 60%, #1b7a52 100%);
+}
+
+/* ── animations ── */
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(45, 212, 160, 0.6); }
+  50% { box-shadow: 0 0 0 5px rgba(45, 212, 160, 0); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes scroll-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+.animate-marquee { animation: marquee 30s linear infinite; }
+.animate-scroll-pulse { animation: scroll-pulse 1.8s ease-in-out infinite; }
+.animate-float-y { animation: float-y 6s ease-in-out infinite; }
+
+/* ── card hover indicator: 1px gradient bar at top, scales in on hover ── */
+.card-grad-top {
+  position: relative;
+  overflow: hidden;
+}
+.card-grad-top::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(135deg, #29adf0 0%, #2dd4a0 60%, #1b7a52 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.card-grad-top:hover::before { transform: scaleX(1); }
+
+/* ── card hover indicator: 2px gradient bar at bottom (process steps) ── */
+.card-grad-bot {
+  position: relative;
+}
+.card-grad-bot::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 32px; right: 32px;
+  height: 2px;
+  background: linear-gradient(135deg, #29adf0 0%, #2dd4a0 60%, #1b7a52 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+.card-grad-bot:hover::after { transform: scaleX(1); }
+
+/* ── why-bottom static top gradient bar ── */
+.grad-top-bar::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(135deg, #29adf0 0%, #2dd4a0 60%, #1b7a52 100%);
+}
+
+/* ── radial-dot grid backgrounds ── */
+.dot-bg-blue::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(41, 173, 240, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+.dot-bg-teal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(45, 212, 160, 0.03) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
