@@ -1,3 +1,4 @@
+import { AU_REDIRECT_HOSTS, CANONICAL_HOST } from '@/lib/site';
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
@@ -20,6 +21,20 @@ type RecaptchaVerifyResponse = {
 
 // Minimum reCAPTCHA v3 score to accept (0.0 = bot, 1.0 = human).
 const SCORE_THRESHOLD = 0.5;
+const RECAPTCHA_ACTION = 'contact';
+
+const ALLOWED_RECAPTCHA_HOSTS = new Set([
+  CANONICAL_HOST,
+  'iterralabs.com',
+  'localhost',
+  ...AU_REDIRECT_HOSTS,
+]);
+
+function isAllowedRecaptchaHostname(hostname: string | undefined) {
+  if (!hostname) return false;
+  if (ALLOWED_RECAPTCHA_HOSTS.has(hostname)) return true;
+  return hostname.endsWith('.vercel.app');
+}
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -71,11 +86,16 @@ export async function POST(request: Request) {
     });
     const verify = (await verifyRes.json()) as RecaptchaVerifyResponse;
 
-    if (!verify.success || (verify.score ?? 0) < SCORE_THRESHOLD) {
-      // Log the reason server-side; keep the user-facing message generic.
+    if (
+      !verify.success ||
+      verify.action !== RECAPTCHA_ACTION ||
+      (verify.score ?? 0) < SCORE_THRESHOLD ||
+      !isAllowedRecaptchaHostname(verify.hostname)
+    ) {
       console.warn(
         '[contact] reCAPTCHA rejected:',
-        verify['error-codes']?.join(', ') ?? `score ${verify.score}`,
+        verify['error-codes']?.join(', ') ??
+          `action=${verify.action} score=${verify.score} hostname=${verify.hostname}`,
       );
       return NextResponse.json(
         { error: 'Captcha verification failed. Please try again.' },
