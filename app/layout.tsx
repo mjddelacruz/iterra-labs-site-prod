@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Outfit, DM_Sans } from 'next/font/google';
 import JsonLd from './components/JsonLd';
 import { siteConfig } from '@/lib/site';
+import { socialMeta } from '@/lib/social';
 import './globals.css';
 
 const outfit = Outfit({
@@ -38,15 +39,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: siteConfig.locale,
-    url: siteConfig.url,
-    siteName: siteConfig.name,
-    title: siteConfig.title,
-    description: siteConfig.description,
+    url: socialMeta.url,
+    siteName: socialMeta.siteName,
+    title: socialMeta.title,
+    description: socialMeta.description,
+    images: [
+      {
+        url: socialMeta.image,
+        width: socialMeta.imageWidth,
+        height: socialMeta.imageHeight,
+        alt: socialMeta.title,
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: siteConfig.title,
-    description: siteConfig.description,
+    title: socialMeta.title,
+    description: socialMeta.description,
+    images: [socialMeta.image],
   },
   robots: {
     index: true,
