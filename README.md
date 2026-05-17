@@ -16,7 +16,7 @@ Public marketing website for [Iterra Labs](https://www.iterralabs.com): a boutiq
 - SEO: metadata, JSON-LD, dynamic Open Graph image, `sitemap.xml`, `robots.txt`
 - Middleware: 301 redirects from `iterralabs.com` / `iterralabs.com.au` → `www.iterralabs.com`
 
-## Prerequisites 
+## Prerequisites
 
 - Node.js 18.18+ (Node 20+ recommended)
 - npm
