@@ -1,16 +1,21 @@
 import type { MetadataRoute } from 'next';
 import { siteConfig } from '@/lib/site';
 
-/** Meta / Facebook link-preview crawlers (Messenger, Facebook, Instagram). */
-const META_CRAWLERS = ['facebookexternalhit', 'Facebot', 'meta-externalagent'];
+/** Meta link-preview crawlers — one rule block per agent (Facebook debugger format). */
+const META_CRAWLERS = [
+  'facebookexternalhit',
+  'Facebot',
+  'meta-externalfetcher',
+  'meta-externalagent',
+] as const;
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      {
-        userAgent: META_CRAWLERS,
+      ...META_CRAWLERS.map((userAgent) => ({
+        userAgent,
         allow: '/',
-      },
+      })),
       {
         userAgent: '*',
         allow: '/',
