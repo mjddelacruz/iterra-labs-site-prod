@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 4000",
-    "build": "next build",
+    "build": "node scripts/generate-og-image.mjs && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -21,6 +21,7 @@
     "@types/react": "19.0.7",
     "@types/react-dom": "19.0.3",
     "postcss": "^8.5.10",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.1.13",
     "typescript": "5.7.3"
   }
