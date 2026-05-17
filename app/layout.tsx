@@ -46,8 +46,10 @@ export const metadata: Metadata = {
     images: [
       {
         url: socialMeta.image,
+        secureUrl: socialMeta.image,
         width: socialMeta.imageWidth,
         height: socialMeta.imageHeight,
+        type: 'image/png',
         alt: socialMeta.title,
       },
     ],
